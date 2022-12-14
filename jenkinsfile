@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+     environment {
+            THE_SAMI_VARIABLE=credentials('samiAWScredentials')
+        }
+    stages {
+        stage('Start') {
+            steps {
+                sh '''
+                   aws --version
+                '''
+            }
+        }
+        stage('Cloudformation') {
+            steps {
+            echo 'Hello Cluster'
+                sh '''
+                aws cloudformation create-stack \
+--stack-name suiBGDeployment \
+--template-url https://suitemplate.s3.amazonaws.com/blue-green.yaml \
+--parameters ParameterKey=Subnet1,ParameterValue='"subnet-01fddd4518b385d00"' ParameterKey=Subnet2,ParameterValue='"subnet-082ec696bc4a1d573"' ParameterKey=Vpc,ParameterValue='"vpc-023560c32deb2901a"' \
+--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --region us-east-1 
+                '''
+            }
+        }
+        
+    }
+}
