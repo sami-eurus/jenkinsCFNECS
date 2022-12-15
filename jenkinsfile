@@ -28,7 +28,7 @@ pipeline {
                 sh '''
                 aws cloudformation update-stack \
 --stack-name suiBGDeployment \
---template-url https://suicfntemplate.s3.amazonaws.com/blue-green.yaml
+--template-url https://suicfntemplate.s3.amazonaws.com/blue-green.yaml --region us-east-1 
                 '''
             }
         } 
