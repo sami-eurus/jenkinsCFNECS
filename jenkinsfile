@@ -28,7 +28,9 @@ pipeline {
                 sh '''
                 aws cloudformation update-stack \
 --stack-name suiBGDeployment \
---template-url https://suicfntemplate.s3.amazonaws.com/blue-green.yaml --region us-east-1 
+--template-url https://suicfntemplate.s3.amazonaws.com/blue-green.yaml \
+--parameters ParameterKey=Subnet1,ParameterValue='"subnet-025ed85b8a565716f"' ParameterKey=Subnet2,ParameterValue='"subnet-0ffd5477375e6e6f8"' ParameterKey=Vpc,ParameterValue='"vpc-05f1b0589fa5c9e03"' \
+--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --region us-east-1 
                 '''
             }
         } 
