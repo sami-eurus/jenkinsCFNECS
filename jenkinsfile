@@ -8,7 +8,10 @@ pipeline {
                 '''
             }
         }
-        stage('Cloudformation') {
+        stage('Cloudformation Creation') {
+         when {
+                equals(actual: currentBuild.number, expected: 1)
+            }
             steps {
             echo 'Creation of Cluster, service with Blue Green Deployment'
                 sh '''
@@ -20,6 +23,14 @@ pipeline {
                 '''
             }
         }
-        
+       stage('Update') {
+            steps {
+                sh '''
+                aws cloudformation update-stack \
+--stack-name suiBGDeployment \
+--template-url https://suicfntemplate.s3.amazonaws.com/blue-green.yaml
+                '''
+            }
+        } 
     }
 }
